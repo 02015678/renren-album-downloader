@@ -445,14 +445,14 @@ var album = (function() {
       folderName = 'renren-album-' + albumId;
     }
     var $albumInfo = $('div.ablum-infor');
-    albumName = $albumInfo.children('h1').contents()[0].data;
-    albumDesc = $.trim($('#describeAlbum').contents()[0].data);
+    albumName = $('span#album-name').contents()[0].data;
+    albumDesc = '';//$.trim($('#describeAlbum').contents()[0].data);
     (albumDesc === '还没有相册描述...') && (albumDesc = '');
 
     // Get all the sources and put in photos array
     photos = [];
     var cnt = 0;
-    var $photoItems = $('div.photo-list li');
+    var $photoItems = $('div#photo-list div');
     if ($photoItems.length === 0) {
       // No photos to download
       // TODO
@@ -461,13 +461,13 @@ var album = (function() {
 
     $photoItems.each(function(idx, ele) {
       var $ele = $(ele);
-      var $a = $ele.children('a.picture');
+      var $a = $ele.children('a');
       var pageUrl = $a.attr('href');
 
       var $img = $a.children('img');
       var src = (function() {
-        eval('var obj = ' + $img.attr('data-photo'));
-        var large = obj.large;
+        eval('var obj = ' + $img.attr('data-viewer'));
+        var large = obj.url;
 
         // replace '/large' with '/original' or '/xlarge' to get larger img
         var original = large.replace('/large', '/original');
