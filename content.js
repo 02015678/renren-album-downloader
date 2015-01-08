@@ -311,7 +311,9 @@ var downloader = (function() {
     cnt++;
 
     var base64Data = base64ArrayBuffer(data);
-    folder.file(photo.filename, base64Data, {base64: true});
+    //folder.file(photo.filename, base64Data, {base64: true});
+    var uri = 'data:application/zip;base64,' + base64Data;
+    saveAs(dataURI2Blob(uri), photo.filename);
 
     view.updateDownloadProgress(cnt, len);
     if (cnt === len) {
