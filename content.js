@@ -278,7 +278,7 @@ var downloader = (function() {
   };
 
   var startZipping = function() {
-    var errLen = errList.length;
+    /*var errLen = errList.length;
     if (errLen > 0) {
       var errorsTxt = '';
       errorsTxt += chrome.i18n.getMessage('errorTxtDesc');
@@ -295,7 +295,8 @@ var downloader = (function() {
         e: 'finishDownload'
       });
       view.finish();
-    });
+    });*/
+    view.finish();
   };
 
   obj.onError = function(url) {
