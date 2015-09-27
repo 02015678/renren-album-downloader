@@ -402,32 +402,15 @@ var album = (function() {
           var urlArr = [photo.src.large];
         }
 
-        var ajaxPhoto = function(urlArr) {
-          $.ajax({
-            url: urlArr[0],
-            type: 'GET',
-            error: function(jqXHR) {
-              if (jqXHR.status === 404 && urlArr.length > 1) {
-                urlArr.shift();
-                ajaxPhoto(urlArr);
-                return;
-              }
-              downloader.onError();
-            },
-            success: function(data) {
-              cnt++;
-              downloader.add(data, photo);
-
-              // Adjust GET_PHOTO_ITV
-              conf.GET_PHOTO_ITV = data.byteLength > 1048576 ? conf.GET_PHOTO_ITV_H : conf.GET_PHOTO_ITV_L;
-              data = null;
-            },
-            dataType: 'binary',
-            timeout: conf.GET_PHOTO_TO
-          });
-        };
-
-        ajaxPhoto(urlArr);
+        chrome.extension.sendRequest({
+          "e":"downloadUrl", "url":urlArr
+        }, function(){
+          cnt++;
+          view.updateDownloadProgress(cnt, len);
+          if (cnt === len) {
+            startZipping();
+          }
+        });
       })();
       window.setTimeout(function() {
         addToQueue(idx + 1);

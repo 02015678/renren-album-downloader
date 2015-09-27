@@ -46,6 +46,12 @@ var reqListeners = {
 };
 
 chrome.extension.onRequest.addListener(function(req, sender, sendResponse) {
+  if(req.e === "downloadUrl") {
+    chrome.downloads.download({"url":req.url[0]}, function(downloadId){
+      sendResponse(true);
+    })
+    return;
+  }
   if (req.e === 'getOption') {
     ret = {value: localStorage[req.name]};
     ret && sendResponse(ret);
